@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://6h4lvl1dwqob"]
+
+[ext_resource type="Script" path="res://characters/player_behaviour.gd" id="1_6xcsf"]
+[ext_resource type="Shader" path="res://characters/test_subject.gdshader" id="2_62n0d"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ggeu4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2orej"]
+render_priority = 0
+shader = ExtResource("2_62n0d")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ouavr"]
+material = SubResource("ShaderMaterial_2orej")
+
+[node name="test_subject" type="CharacterBody3D"]
+script = ExtResource("1_6xcsf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38419e-07, 0)
+shape = SubResource("CapsuleShape3D_ggeu4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_ouavr")
+
+[node name="camera" type="Camera3D" parent="."]
