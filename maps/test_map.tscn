@@ -1,8 +1,50 @@
-[gd_scene load_steps=2 format=3 uid="uid://blhhsxso1u4c8"]
+[gd_scene load_steps=6 format=3 uid="uid://blhhsxso1u4c8"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5ldkn"]
+size = Vector3(200, 0.1, 15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_06h6i"]
+size = Vector3(200, 0.1, 15)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gn4a8"]
+size = Vector3(15, 0.1, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uqutv"]
+size = Vector3(15, 0.1, 30)
 
 [sub_resource type="Environment" id="Environment_b1mo3"]
 
 [node name="test-map" type="Node3D"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="world" type="Node3D" parent="."]
+
+[node name="long_floor" type="RigidBody3D" parent="world"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="world/long_floor"]
+mesh = SubResource("BoxMesh_5ldkn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/long_floor"]
+shape = SubResource("BoxShape3D_06h6i")
+
+[node name="wide_floor_1" type="RigidBody3D" parent="world"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.5, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="world/wide_floor_1"]
+mesh = SubResource("BoxMesh_gn4a8")
+skeleton = NodePath("../../long_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/wide_floor_1"]
+shape = SubResource("BoxShape3D_uqutv")
+
+[node name="wide_floor_2" type="RigidBody3D" parent="world"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -107.5, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="world/wide_floor_2"]
+mesh = SubResource("BoxMesh_gn4a8")
+skeleton = NodePath("../../long_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world/wide_floor_2"]
+shape = SubResource("BoxShape3D_uqutv")
+
+[node name="test_environment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_b1mo3")
