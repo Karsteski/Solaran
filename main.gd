@@ -6,6 +6,9 @@ extends Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# TODO: Make mouse unconfined to game window when the actual menu is showing (With ESC probs)
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+
 	add_child(test_map.instantiate())
 
 

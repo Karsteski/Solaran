@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://6h4lvl1dwqob"]
+[gd_scene load_steps=7 format=3 uid="uid://6h4lvl1dwqob"]
 
 [ext_resource type="Script" path="res://characters/player_behaviour.gd" id="1_6xcsf"]
 [ext_resource type="Shader" path="res://characters/test_subject.gdshader" id="2_62n0d"]
+[ext_resource type="Script" path="res://characters/camera_behaviour.gd" id="3_21nq0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ggeu4"]
 
@@ -23,3 +24,8 @@ shape = SubResource("CapsuleShape3D_ggeu4")
 mesh = SubResource("CapsuleMesh_ouavr")
 
 [node name="camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
+script = ExtResource("3_21nq0")
+SPEED = 1.0
+MOUSE_SPEED = null
+VIEWPORT_EDGE_THRESHOLD = null

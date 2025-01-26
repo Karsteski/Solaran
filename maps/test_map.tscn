@@ -34,6 +34,7 @@ script = ExtResource("1_5mju5")
 [node name="world" type="Node3D" parent="."]
 
 [node name="long_floor" type="RigidBody3D" parent="world"]
+freeze = true
 script = ExtResource("1_fqqif")
 grid_colour = Vector3(0, 0.5, 0)
 
@@ -46,6 +47,7 @@ mesh = SubResource("BoxMesh_5ldkn")
 
 [node name="wide_floor_1" type="RigidBody3D" parent="world"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.5, 0, 0)
+freeze = true
 script = ExtResource("1_fqqif")
 grid_colour = Vector3(0, 0, 0.5)
 
@@ -59,6 +61,7 @@ skeleton = NodePath("../../long_floor")
 
 [node name="wide_floor_2" type="RigidBody3D" parent="world"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -107.5, 0, 0)
+freeze = true
 script = ExtResource("1_fqqif")
 grid_colour = Vector3(1, 0, 0)
 

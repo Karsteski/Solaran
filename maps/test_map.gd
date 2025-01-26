@@ -8,6 +8,7 @@ extends Node3D
 
 
 func spawn_character() -> void:
+	# TODO: Add player as a child of the map
 	spawn_point.add_child(character.instantiate())
 
 
