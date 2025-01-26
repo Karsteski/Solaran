@@ -29,8 +29,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		print("event_velocity = ", event.velocity)
 
 		
-		if (abs(mouse_position.x - 0.0) < VIEWPORT_EDGE_THRESHOLD or abs(mouse_position.x - viewport_size.x) < VIEWPORT_EDGE_THRESHOLD
-			or abs(mouse_position.y - 0.0) < VIEWPORT_EDGE_THRESHOLD or abs(mouse_position.y - viewport_size.y) < VIEWPORT_EDGE_THRESHOLD):
+		if (mouse_position.x < VIEWPORT_EDGE_THRESHOLD or mouse_position.x > viewport_size.x - VIEWPORT_EDGE_THRESHOLD
+			or mouse_position.y < VIEWPORT_EDGE_THRESHOLD or mouse_position.y > viewport_size.y - VIEWPORT_EDGE_THRESHOLD):
 
 			var mouse_direction: Vector3 = (transform.basis * Vector3(event.velocity.x, 0.0, event.velocity.y)).normalized()
 			position.x += mouse_direction.x 
