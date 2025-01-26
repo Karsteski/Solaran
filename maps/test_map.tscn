@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://blhhsxso1u4c8"]
+[gd_scene load_steps=11 format=3 uid="uid://blhhsxso1u4c8"]
 
 [ext_resource type="Script" path="res://maps/test_map.gd" id="1_5mju5"]
 [ext_resource type="Shader" path="res://maps/grid.gdshader" id="1_6sa8c"]
 [ext_resource type="Script" path="res://maps/floor_behaviour.gd" id="1_fqqif"]
-[ext_resource type="PackedScene" uid="uid://6h4lvl1dwqob" path="res://characters/test_subject.tscn" id="2_way7c"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_06h6i"]
 size = Vector3(200, 0.1, 15)
@@ -31,7 +30,6 @@ size = Vector3(15, 0.1, 30)
 
 [node name="test-map" type="Node3D"]
 script = ExtResource("1_5mju5")
-character = ExtResource("2_way7c")
 
 [node name="world" type="Node3D" parent="."]
 
