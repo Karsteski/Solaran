@@ -47,6 +47,10 @@ func _ready() -> void:
 	window.mouse_exited.connect(func(): is_mouse_inside_viewport = false)
 
 func _unhandled_input(event: InputEvent) -> void:
+	# For now, let's not do anything if the mouse leaves the game viewport
+	if not is_mouse_inside_viewport:
+		return
+
 	# TODO: hardcoded keybind 🤮
 	if event is InputEventKey and event.keycode == KEY_SPACE and event.is_pressed():
 		# Reset camera
