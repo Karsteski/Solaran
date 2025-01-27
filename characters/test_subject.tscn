@@ -27,5 +27,5 @@ mesh = SubResource("CapsuleMesh_ouavr")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
 script = ExtResource("3_21nq0")
 SPEED = 1.0
-MOUSE_SPEED = null
-VIEWPORT_EDGE_THRESHOLD = null
+MOUSE_SPEED = 6.0
+VIEWPORT_EDGE_THRESHOLD = 40

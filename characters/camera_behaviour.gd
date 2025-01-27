@@ -3,48 +3,57 @@ extends Camera3D
 
 @export var SPEED := 20.0
 @export var MOUSE_SPEED := 20.0
-@export var VIEWPORT_EDGE_THRESHOLD := 2;
+@export var VIEWPORT_EDGE_THRESHOLD := 20;
 
+@onready var window: Window = get_viewport().get_window()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.is_pressed():
-		if event.keycode == KEY_SPACE:
-			position = Vector3(0, position.y, 0)
-
-		var input_direction: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-		var direction: Vector3 = (transform.basis * Vector3(input_direction.x, 0.0, input_direction.y)).normalized()
-
-
-		if direction:
-			position.x += direction.x * SPEED
-			position.z += direction.y * SPEED
-
-	if event is InputEventMouseMotion:
-		var mouse_position: Vector2 = get_viewport().get_mouse_position()
-		var viewport_size: Vector2 = get_viewport().size
-
-
-		print("mouse_position = ", mouse_position)
-		print("viewport_size = ", viewport_size)
-		print("event_velocity = ", event.velocity)
+var is_mouse_inside_viewport = true
+var mouse_direction: Vector3 = Vector3.ZERO
 
 		
-		if (mouse_position.x < VIEWPORT_EDGE_THRESHOLD or mouse_position.x > viewport_size.x - VIEWPORT_EDGE_THRESHOLD
-			or mouse_position.y < VIEWPORT_EDGE_THRESHOLD or mouse_position.y > viewport_size.y - VIEWPORT_EDGE_THRESHOLD):
+func handle_camera_movement(direction: Vector3, delta: float) -> void:
+	var mouse_position: Vector2 = get_viewport().get_mouse_position()
+	var viewport_size: Vector2 = get_viewport().size
 
-			var mouse_direction: Vector3 = (transform.basis * Vector3(event.velocity.x, 0.0, event.velocity.y)).normalized()
-			position.x += mouse_direction.x 
-			position.z += mouse_direction.y
-			
-			
+	# Camera positions are only updated if the mouse is moving in the direction of the relevant quadrant
+	# Taking care of diagonal camera movement in a clockwise order
+	if mouse_position.x < VIEWPORT_EDGE_THRESHOLD and mouse_position.y < VIEWPORT_EDGE_THRESHOLD:
+		position.x = lerp(position.x, position.x + mouse_direction.x * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.x < 0.0 else position.x
+		position.z = lerp(position.z, position.z + mouse_direction.y * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.y < 0.0 else position.z
+	elif mouse_position.x > viewport_size.x - VIEWPORT_EDGE_THRESHOLD and mouse_position.y < VIEWPORT_EDGE_THRESHOLD:
+		position.x = lerp(position.x, position.x + mouse_direction.x * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.x > 0.0 else position.x
+		position.z = lerp(position.z, position.z + mouse_direction.y * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.y < 0.0 else position.z
+	elif mouse_position.x > viewport_size.x - VIEWPORT_EDGE_THRESHOLD and mouse_position.y > viewport_size.y - VIEWPORT_EDGE_THRESHOLD:
+		position.x = lerp(position.x, position.x + mouse_direction.x * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.x > 0.0 else position.x
+		position.z = lerp(position.z, position.z + mouse_direction.y * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.y > 0.0 else position.z
+	elif mouse_position.x < VIEWPORT_EDGE_THRESHOLD and mouse_position.y > viewport_size.y - VIEWPORT_EDGE_THRESHOLD:
+		position.x = lerp(position.x, position.x + mouse_direction.x * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.x < 0.0 else position.x
+		position.z = lerp(position.z, position.z + mouse_direction.y * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.y > 0.0 else position.z
+	# Horizontal or vertical camera movement
+	elif mouse_position.x < VIEWPORT_EDGE_THRESHOLD:
+		position.x = lerp(position.x, position.x + mouse_direction.x * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.x < 0.0 else position.x
+	elif mouse_position.x > viewport_size.x - VIEWPORT_EDGE_THRESHOLD:
+		position.x = lerp(position.x, position.x + mouse_direction.x * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.x > 0.0 else position.x
+	elif mouse_position.y < VIEWPORT_EDGE_THRESHOLD:
+		position.z = lerp(position.z, position.z + mouse_direction.y * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.y < 0.0 else position.z
+	elif mouse_position.y > viewport_size.y - VIEWPORT_EDGE_THRESHOLD:
+		position.z = lerp(position.z, position.z + mouse_direction.y * MOUSE_SPEED, MOUSE_SPEED * delta) if mouse_direction.y > 0.0 else position.z
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# look_at(position)
-	pass
+	# Note: This is bugged on the COSMIC DE on Linux, and possibly other tiling WMs
+	# The cursor is able to leave the window despite having set "Input.mouse_mode = Input.MOUSE_MODE_CONFINED"
+	# Is this better behaved on other DEs/OSes?
+	window.mouse_entered.connect(func(): is_mouse_inside_viewport = true)
+	window.mouse_exited.connect(func(): is_mouse_inside_viewport = false)
 
+func _unhandled_input(event: InputEvent) -> void:
+	# TODO: hardcoded keybind 🤮
+	if event is InputEventKey and event.keycode == KEY_SPACE and event.is_pressed():
+		# Reset camera
+		position = Vector3(0.0, position.y, 0.0)
+	if event is InputEventMouseMotion:
+		# TODO: I still don't fully understand why to use the transform basis
+		mouse_direction = (transform.basis * Vector3(event.velocity.x, 0.0, event.velocity.y)).normalized()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	handle_camera_movement(mouse_direction, delta)
