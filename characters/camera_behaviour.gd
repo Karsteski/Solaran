@@ -46,6 +46,7 @@ func _ready() -> void:
 	window.mouse_entered.connect(func(): is_mouse_inside_viewport = true)
 	window.mouse_exited.connect(func(): is_mouse_inside_viewport = false)
 
+
 func _unhandled_input(event: InputEvent) -> void:
 	# For now, let's not do anything if the mouse leaves the game viewport
 	if not is_mouse_inside_viewport:

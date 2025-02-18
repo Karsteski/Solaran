@@ -22,7 +22,16 @@
 
 ## MVP
 
-- Implement base rigidbody3d character and movement
+- Model a Solaran
+    - Solaran model must have colours, 
+    - [] Turnaround
+    - [] 3D Model
+    - [] Materials
+    - [] Animations
+        - [] Idle
+        - [] Float/Moving
+        - [] Rasengan Ability
+- Implement base rigidbody3D character and movement
 - Implement input mapping and player defined inputs
 - Implement a single ability with full animation, collision etc.
 - Implement test dummy
